@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chào bạn</title>
+</head>
+<body>
+  <h1 id="greeting">Đang tải...</h1>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name") || "bạn";
+    const age = params.get("age") || "không rõ";
+
+    document.getElementById("greeting").innerText = `Xin chào ${name}, bạn ${age} tuổi!`;
+  </script>
+</body>
+</html>
