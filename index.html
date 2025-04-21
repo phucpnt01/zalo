@@ -2,17 +2,113 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Chào bạn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copy & Send Zalo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 10px;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    #content {
+      font-size: 14px;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      text-align: left;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button, .zalo-button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    button:hover, .zalo-button:hover {
+      background-color: #45a049;
+    }
+
+    .success-message {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1 id="greeting">Đang tải...</h1>
+
+  <div class="container">
+    <h2>Nội dung cần sao chép</h2>
+    
+    <!-- Nội dung cần sao chép -->
+    <div id="content">Chào <span id="full_name">Full Name</span>,
+Chị giao em đầu mục công việc này, nhờ em hoàn thành giùm chị trước ngày <span id="deadline">Deadline</span> nhé.
+
+Công việc: <span id="task">Task</span> - <span id="detail">Detail</span>
+
+Nhận được tin nhắn thì phản hồi hoặc tim cho chị biết nhé.
+Cảm ơn em!</div>
+
+    <!-- Nút copy -->
+    <button onclick="copyToClipboard()">Sao chép nội dung</button>
+    <div class="success-message" id="message"></div>
+
+    <!-- Nút mở Zalo -->
+    <a class="zalo-button" id="zaloLink" href="https://zalo.me/0123456789" target="_blank">Gửi qua Zalo</a>
+  </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get("name") || "bạn";
-    const age = params.get("age") || "không rõ";
+    // Lấy các tham số từ URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param) || '';  // Nếu không có giá trị, trả về chuỗi rỗng
+    }
 
-    document.getElementById("greeting").innerText = `Xin chào ${name}, bạn ${age} tuổi!`;
+    // Thay thế nội dung trong trang bằng các giá trị từ URL
+    document.getElementById('full_name').innerText = getQueryParam('full_name');
+    document.getElementById('deadline').innerText = getQueryParam('deadline');
+    document.getElementById('task').innerText = getQueryParam('task');
+    document.getElementById('detail').innerText = getQueryParam('detail');
+
+    // 👉 Thay số điện thoại tại đây nếu cần
+    const phoneNumber = getQueryParam('phone');  // Lấy số điện thoại từ URL
+    document.getElementById("zaloLink").href = "https://zalo.me/" + phoneNumber;
+
+    function copyToClipboard() {
+      const content = document.getElementById("content").innerText;
+
+      navigator.clipboard.writeText(content).then(function() {
+        document.getElementById("message").innerText = "✅ Đã sao chép nội dung vào clipboard!";
+      }, function(err) {
+        document.getElementById("message").innerText = "❌ Lỗi khi sao chép: " + err;
+      });
+    }
   </script>
+
 </body>
 </html>
